@@ -10,13 +10,13 @@ output:
       collapsed: false
 ---
 
-##Introduction
+## Introduction
 
-###Justification
+### Justification
 
 This study validated a scalable group-based procedure for assessing elementary school students' executive functions in classroom settings. It was authored by my advisor in the Graduate School of Education, Jelena Obradovic, alongside our lab's current research scientist and several former doctoral students in the lab. With Jelena's input, I have chosen to reproduce this study's analysis for several key reasons: (1) it will give me direct experience with the data analysis methods commonly used in our lab, enabling me to contribute to similar future analyses; (2) it is an appropriate level of challenge for me, given that I have no prior experience coding in R and a very basic statistical background relative to my lab colleagues; (3) it will introduce me to key constructs in children's executive functions (EF), as well as the the relationships between those constructs; and (4) it will prepare me to contribute to several current projects in the lab wherein we are using a version of this very assessment protocol to measure children's longitudinal EF development. The members of my lab felt that this reproduction would be more relevant to our work than a separate replication project. 
 
-###Data and Procedures
+### Data and Procedures
 
 I will be using the large original dataset from this validation study, which is currently housed within my lab but which I hope to help publically available online as a part of my reproduction. I will adhere to the complex four-step analysis paper used in the original paper, which included:
 
@@ -25,41 +25,41 @@ I will be using the large original dataset from this validation study, which is 
 * Determining whether there were mean differences between IA and GA performance composites while accounting for the ordering of the two assessments  
 * Testing the unique contribution of EF performance in IA and GA settings for the prediction of self- regulated classroom behaviors and academic achievement
 
-###Anticipated Challenges
+### Anticipated Challenges
 
 The largest anticipated challenge involves simultaneously familiarizing myself with R, which I have never coded in before, and with the original paper's statistical methods, some of which are significantly more complex than methods I have used in the past. 
 
-###Relevant Links
+### Relevant Links
 
 **Project Repository:** [https://github.com/psych251/obradovic2017](https://github.com/psych251/obradovic2017)
 
 **Original Paper:** [https://github.com/psych251/obradovic2017/tree/master/original_paper](https://github.com/psych251/obradovic2017/tree/master/original_paper) 
 
-##Methods
+## Methods
 
-###Power Analysis
+### Power Analysis
 
 Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size.  Considerations of feasibility for selecting planned sample size.
 
-###Planned Sample
+### Planned Sample
 
 Planned sample size and/or termination rule, sampling frame, known demographics if any, preselection rules if any.
 
-###Materials
+### Materials
 
 All materials - can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
 
-###Procedure	
+### Procedure	
 
 Can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
 
-###Analysis Plan
+### Analysis Plan
 
 Can also quote directly, though it is less often spelled out effectively for an analysis strategy section.  The key is to report an analysis strategy that is as close to the original - data cleaning rules, data exclusion rules, covariates, etc. - as possible.  
 
 **Clarify key analysis of interest here**  You can also pre-specify additional analyses you plan to do.
 
-###Differences from Original Study
+### Differences from Original Study
 
 Explicitly describe known differences in sample, setting, procedure, and analysis plan from original study.  The goal, of course, is to minimize those differences, but differences will inevitably occur.  Also, note whether such differences are anticipated to make a difference based on claims in the original article or subsequent published research on the conditions for obtaining the effect.
 
@@ -74,10 +74,10 @@ You can comment this section out prior to final report with data collection.
   Any differences from what was described as the original plan, or “none”.
 
 
-##Results
+## Results
 
 
-### Data preparation
+### Data Preparation
 
 Data preparation following the analysis plan.
 	
@@ -93,13 +93,13 @@ Data preparation following the analysis plan.
 #### Prepare data for analysis - create columns etc.
 ```
 
-### Confirmatory analysis
+### Confirmatory Analysis
 
 The analyses as specified in the analysis plan.  
 
 *Side-by-side graph with original graph is ideal here*
 
-###Exploratory analyses
+### Exploratory Analyses
 
 Any follow-up analyses desired (not required).  
 
