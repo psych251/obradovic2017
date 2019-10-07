@@ -18,7 +18,7 @@ This study validated a scalable group-based procedure for assessing elementary s
 
 ### Data and Procedures
 
-I will be using the large original dataset from this validation study, which is currently housed within my lab but which I hope to help publically available online as a part of my reproduction. I will adhere to the complex four-step analysis paper used in the original paper, which included:
+I will be using the large original dataset from this validation study, which is currently privately housed within my lab but which I hope to help make publically available online as a part of my reproduction. I will adhere to the complex four-step analysis paper used in the original paper, which included:
 
 * Examining descriptive statistics and the correlations between individual assessment (IA) and group assessment (GA) for each EF task
 * Comparing associations of EF composites with known demographic and educational covariates across IA and GA settings
