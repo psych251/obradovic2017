@@ -12,7 +12,7 @@
 
 <meta name="author" content="Lily Steyer (lsteyer@stanford.edu)" />
 
-<meta name="date" content="2019-10-06" />
+<meta name="date" content="2019-10-20" />
 
 <title>Reproduction of a Validation Study for a Group-Based Assessment of Children’s Executive Functions (2017, Journal of Applied Developmental Psychology)</title>
 
@@ -1512,7 +1512,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Reproduction of a Validation Study for a Group-Based Assessment of Children’s Executive Functions (2017, Journal of Applied Developmental Psychology)</h1>
 <h4 class="author">Lily Steyer (<a href="mailto:lsteyer@stanford.edu" class="email">lsteyer@stanford.edu</a>)</h4>
-<h4 class="date">October 06, 2019</h4>
+<h4 class="date">October 20, 2019</h4>
 
 </div>
 
@@ -1521,11 +1521,11 @@ div.tocify {
 <h2>Introduction</h2>
 <div id="justification" class="section level3">
 <h3>Justification</h3>
-<p>This study validated a scalable group-based procedure for assessing elementary school students’ executive functions in classroom settings. It was authored by my advisor in the Graduate School of Education, Jelena Obradovic, alongside our lab’s current research scientist and several former doctoral students in the lab. With Jelena’s input, I have chosen to reproduce this study’s analysis for several key reasons: (1) it will give me direct experience with the data analysis methods commonly used in our lab, enabling me to contribute to similar future analyses; (2) it is an appropriate level of challenge for me, given that I have no prior experience coding in R and a very basic statistical background relative to my lab colleagues; (3) it will introduce me to key constructs in children’s executive functions (EF), as well as the the relationships between those constructs; and (4) it will prepare me to contribute to several current projects in the lab wherein we are using a version of this very assessment protocol to measure children’s longitudinal EF development. The members of my lab felt that this reproduction would be more relevant to our work than a separate replication project.</p>
+<p>This study validated a scalable group-based procedure for assessing elementary school students’ executive functions in classroom settings. It was authored by my advisor in the Graduate School of Education, Jelena Obradovic, alongside our lab’s current research scientist and several former doctoral students. With Jelena’s input, I have chosen to reproduce this study’s analysis for several key reasons: (1) it will give me direct experience with the data analysis methods commonly used in our lab, enabling me to contribute to similar future analyses; (2) it is an appropriate level of challenge for me, given that I have no prior experience coding in R and a very basic statistical background relative to my lab colleagues; (3) it will introduce me to key constructs in children’s executive functions (EF), as well as the the relationships between those constructs; and (4) it will prepare me to contribute to several current projects in the lab wherein we are using a version of this very assessment protocol to measure children’s longitudinal EF development. The members of my lab felt that this reproduction would be more relevant to our work than a separate replication project.</p>
 </div>
 <div id="data-and-procedures" class="section level3">
 <h3>Data and Procedures</h3>
-<p>I will be using the large original dataset from this validation study, which is currently privately housed within my lab but which I hope to help make publically available online as a part of my reproduction. I will adhere to the complex four-step analysis paper used in the original paper, which included:</p>
+<p>I will be using the large original dataset from this validation study, which is currently privately housed within my lab but which I hope to help make publically available online as a part of my reproduction. I will adhere to the complex four-step analysis plan used in the original paper, which included:</p>
 <ul>
 <li>Examining descriptive statistics and the correlations between individual assessment (IA) and group assessment (GA) for each EF task</li>
 <li>Comparing associations of EF composites with known demographic and educational covariates across IA and GA settings</li>
@@ -1548,52 +1548,93 @@ div.tocify {
 <h2>Methods</h2>
 <div id="power-analysis" class="section level3">
 <h3>Power Analysis</h3>
-<p>Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size. Considerations of feasibility for selecting planned sample size.</p>
+<p><em>To be filled in: Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size. Considerations of feasibility for selecting planned sample size.</em></p>
 </div>
 <div id="planned-sample" class="section level3">
 <h3>Planned Sample</h3>
-<p>Planned sample size and/or termination rule, sampling frame, known demographics if any, preselection rules if any.</p>
+<p><em>To be filled in: Planned sample size and/or termination rule, sampling frame, known demographics if any, preselection rules if any.</em></p>
 </div>
 <div id="materials" class="section level3">
 <h3>Materials</h3>
-<p>All materials - can quote directly from original article - just put the text in quotations and note that this was followed precisely. Or, quote directly and just point out exceptions to what was described in the original article.</p>
+<p>The measures described below (quoted and followed precisely from the original article) were used to collect this data set:</p>
+<div id="hearts-and-flowers" class="section level4">
+<h4>Hearts and Flowers</h4>
+<p>“The Hearts and Flowers (H&amp;F) task, designed to assess inhibitory control and cognitive flexibility skills, has been widely used with elementary school students (Davidson, Amso, Anderson, &amp; Diamond, 2006; Oberle &amp; Schonert-Reichl, 2013; Roy, McCoy, &amp; Raver, 2014; Yeniad et al., 2014). There were three blocks: (1) 12 congruent ‘heart’ trials, (2) 12 incongruent ‘flower’ trials, and (3) 33 mixed ‘heart and flower’ trials. Students were presented with an image of a red heart or flower on one side of the screen. For congruent heart trials, students were instructed to press the button on the same side as the presented stimuli (i.e., heart). For incongruent flower trials, students were instructed to press the button on the opposite side of the stimuli (i.e., flower). Accuracy scores were drawn from the incongruent block and the mixed block. Although the window of time in which children could respond (i.e., 750 ms) was based on previous research (Davidson et al., 2006), the pacing for the mixed block was too rapid for children in this study, resulting in many missing RT scores during this block. Consequently, RT scores were drawn only from the incongruent block.”</p>
+</div>
+<div id="multi-source-interference-test" class="section level4">
+<h4>Multi-Source Interference Test</h4>
+<p>“The Multi-Source Interference Test (MSIT) is a measure of inhibitory control skills that is used in middle childhood and adolescence (Bush &amp; Shin, 2006; Liu, Angstadt, Taylor, &amp; Fitzgerald, 2016; Ursache, Noble, &amp; Blair, 2015). There were two blocks: (1) 24 congruent trials and (2) 24 incongruent trials. On both blocks, students were presented with a sequence of three digits. For each trial, two of these digits (the distractors) were the same and one (the target) differed from the distractors (e.g., “2 2 1”). Students were instructed to press a button whose numeric value corresponded to the numeric value of the target. For example, the correct response to the sequence “2 2 1” would be “1”. For the congruent trials, the distractors were always zeroes and the numeric value of the target always corresponded to the numeric value of the correct button press (i.e., “1 0 0”, “0 2 0”, “0 0 3”). For the incongruent trials, the distractors were non-zero and the numeric value of correct button press was always different from the position of the correct response (e.g., “2 3 3”, “2 2 1”, “1 3 1”). Accuracy and RT scores from the incongruent block of trials were used.&quot;</p>
+</div>
+<div id="digit-span-backward" class="section level4">
+<h4>Digit Span Backward</h4>
+<p>“The Digit Span Backward (DSB) is a standard measure of working memory drawn from the Wechsler Intelligence Scale for Children-IV (Flanagan &amp; Kaufman, 2009) that is commonly used in middle childhood (Blankenship &amp; Bell, 2015; Brocki &amp; Bohlin, 2004; St Clair-Thompson &amp; Gathercole, 2006). A series of digits were presented sequentially on the tablet screen. The student was instructed to enter those numbers backwards onto a numeric keypad after the last digit was presented. There were four practice trials, each using strings that were two digits long. These practice trials were followed by eight test trials of increasing difficulty (two trials each of length two, three, four, and five digits). Accuracy scores were computed as the proportion of correct test trials.”</p>
+</div>
+<div id="scoring-of-ef-tasks" class="section level4">
+<h4>Scoring of EF Tasks</h4>
+<p>&quot;Anticipatory responses—defined as a response &lt;200 milliseconds (ms) after stimulus presentation—were recoded as missing for the accuracy scores and RT scores. Further, the H&amp;F and MSIT tasks were timed, such that students were unable to respond after 750 ms and 2500 ms, respectively. If the student failed to respond during this window, the trial was counted as incorrect for the accuracy score and as missing for the RT score. Finally, as is standard practice, RT scores were calculated only for the accurate trials and were not calculated for the first trial in each block. To receive an accuracy score for each task, a participants were required to have non-missing scores for 8/8 DSB trials (because difficulty varied across trials), 5/12 H&amp;F incongruent trials, 10/33 H&amp;F mixed trials, and 15/45 MSIT incongruent trials. In addition, RT scores were based on a minimum of three accurate trials for the H&amp;F incongruent block and the MSIT incongruent block. Three outliers, defined as accuracy or RT scores that were N4 SD above or below the sample mean, were Winsorized to the highest non-outlier value that was observed for that task.</p>
+<p>Cronbach’s alpha reliability for the RT variables was as follows: MSIT incongruent IA = 0.91, GA = 0.90; H&amp;F incongruent block IA = 0.88, GA = 0.90. Since Cronbach’s alpha systematically underestimates reliability of scale using binary indicators (Raykov, Dimitrov, &amp; Asparouhov, 2010), we used tetrachoric correlations to correct for this bias in our computation of alpha coefficient for the binary accuracy variables. Alpha reliability for the accuracy variables was as follows: digit span IA = 0.85, GA = 0.82; MSIT incongruent block IA = 0.90, GA = 0.95; H&amp;F incongruent block IA = 0.91, GA = 0.89; H&amp;F mixed block IA = 0.92, GA = 0.91.&quot;</p>
+</div>
+<div id="academic-achievement" class="section level4">
+<h4>Academic Achievement</h4>
+<p>“State-administered standardized test scores were used to measure English/language arts and mathematics skills at two time points. In spring of 2013, scores were drawn from the California Standards Test (California Department of Education, 2016a), a test designed to match the state’s academic content standards. In spring of 2015, scores were drawn from the Smarter Balance Assessment Consortium (California Department of Education, 2016b), a test designed to match the new Common Core State Standards.”</p>
+</div>
+<div id="self-regulated-classroom-behaviors" class="section level4">
+<h4>Self-Regulated Classroom Behaviors</h4>
+<p>“Teachers reported on students’ classroom behaviors relevant to academic success using the Teacher-Child Rating Scale (TCRS; Hightower, 1986). Each item on the task orientation (e.g., “well-organized”, “com- pletes work”, “works well without adult support”) and frustration tolerance (e.g., “accepts things not going his/her way”, “copes well with failure”) scales was rated on a five-point scale, ranging from 1 = “not at all” to 5 = “very well”.&quot;</p>
+</div>
+<div id="covariates" class="section level4">
+<h4>Covariates</h4>
+<p>“Child age in years, child gender (0 = male, 1 = female), and years of parent education were included as covariates” in all analyses. As explained in Tables 3 &amp; 4 in the original paper, for analyses of mean differences between IA and GA scores as well as the predictive validity of students’ IA and GA scores, the authors also included school fixed effects and child’s ethnicity as covariates. Finally, the analysis of mean differences between IA and GA scores included “a dummy variable representing the assessment order effect” as a sixth covariate.</p>
+</div>
 </div>
 <div id="procedure" class="section level3">
 <h3>Procedure</h3>
-<p>Can quote directly from original article - just put the text in quotations and note that this was followed precisely. Or, quote directly and just point out exceptions to what was described in the original article.</p>
+<p>The procedures outlined below (quoted and followed precisely from the original article) were used to collect this data set:</p>
+<p>“Longitudinal data from four time points were used in this study. The participants described above (third- through fifth-graders) completed EF assessments in the fall of 2013 (Time 2), and teacher reports of students’ classroom behavior were collected using an online questionnaire in the spring of 2014 (Time 3). Students’ academic achievement data were obtained from school records for the previous academic year, 2012–13, when students attended second through fourth grades (Time 1), and for the following academic year, 2014–15, when students attended fourth through sixth grades (Time 4). Teachers were compensated with $95 for their participation and were given a tablet computer for classroom use.”</p>
+<div id="assessment-of-executive-functions" class="section level4">
+<h4>Assessment of Executive Functions</h4>
+<p>&quot;Developmentally-appropriate and widely used EF tasks were adapted to be used on Android tablet computers. The tasks were designed to look fun and attractive to children by including cartoon pictures next to simplified task rules that students could easily read on their own. They were programmed to include a fixed number of practice trials and passcode-locked screens at designated intervals, to ensure that all students completed the tasks at a similar pace and were paying attention at the appropriate times to a research assistant who explained task instructions.</p>
+<p>During GA, each child was given a tablet computer and all students in the classroom completed the EF tasks simultaneously. We developed a classroom procedure that enabled three research assistants (RAs) to administer EF assessment in a fashion similar to how teachers and their aides sometimes administer academic activities and tests. The lead RA, akin to a head teacher, stood at the front of the classroom, elicited students’ attention, and explained the task rules using large posterboards that mimicked what students would later see on their tablet screens. The lead RA facilitated a group practice of each task rule by soliciting students’ verbal responses. Afterward, all students had an opportunity to read the simplified task rules on their tablet screens and receive individualized feedback from the computer program, based on their performance on practice trials. The lead RA ensured that students completed practice and test trials at the same time by providing them with the passcodes to unlock different task blocks when all students were ready to proceed. Meanwhile, the other two RAs roamed the classroom like teacher’s aides, helping students who needed technical assistance.</p>
+<p>For IA, a subset of students completed the same tablet tasks outside of their classrooms in a quiet space such as a library room. A single RA explained the task rules to a child using a flipbook that contained the exact same images that were presented on posterboards in the GA context. Analogous to GA, the child was asked to verbally respond to two practice trials before proceeding to complete a practice block on a tablet computer. To account for practice effects, we administered IA in a counterbalanced fashion so that half of the students completed IA before GA and half of the students completed IA after GA.&quot;</p>
+</div>
 </div>
 <div id="analysis-plan" class="section level3">
 <h3>Analysis Plan</h3>
-<p>Can also quote directly, though it is less often spelled out effectively for an analysis strategy section. The key is to report an analysis strategy that is as close to the original - data cleaning rules, data exclusion rules, covariates, etc. - as possible.</p>
-<p><strong>Clarify key analysis of interest here</strong> You can also pre-specify additional analyses you plan to do.</p>
+<p>The four key analyses of interest, as quoted from the original paper, are as follows:</p>
+<p>“We performed a series of four analyses to validate GA and describe similarities and differences between IA and GA. First, we examined descriptive statistics and the correlations between IA and GA for each task. Second, we compared associations of EF composites with known demographic and educational covariates across the two assessment settings. Third, we examined whether there were mean differences between IA and GA performance composites while accounting for the ordering of the two assessments. Finally, we tested the unique contribution of EF performance in IA and GA settings for the prediction of self-regulated classroom behaviors and academic achievement.”</p>
+<p>Please see above for references to important data cleaning and exclusion rules, as well as covariates.</p>
 </div>
 <div id="differences-from-original-study" class="section level3">
 <h3>Differences from Original Study</h3>
-<p>Explicitly describe known differences in sample, setting, procedure, and analysis plan from original study. The goal, of course, is to minimize those differences, but differences will inevitably occur. Also, note whether such differences are anticipated to make a difference based on claims in the original article or subsequent published research on the conditions for obtaining the effect.</p>
-</div>
-<div id="methods-addendum-post-data-collection" class="section level3">
-<h3>Methods Addendum (Post Data Collection)</h3>
-<p>You can comment this section out prior to final report with data collection.</p>
-<div id="actual-sample" class="section level4">
-<h4>Actual Sample</h4>
-<p>Sample size, demographics, data exclusions based on rules spelled out in analysis plan</p>
-</div>
-<div id="differences-from-pre-data-collection-methods-plan" class="section level4">
-<h4>Differences from pre-data collection methods plan</h4>
-<p>Any differences from what was described as the original plan, or “none”.</p>
-</div>
+<p>Because this is a reproduction using the data from the original study, I do not anticipate any differences in sample, setting, procedure, or analysis plan. The only differences I foresee involve the actual R code used in the analyses, as I will be developing my code from scratch.</p>
 </div>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
 <div id="data-preparation" class="section level3">
 <h3>Data Preparation</h3>
-<p>Data preparation following the analysis plan.</p>
+<p>Based on the materials and analysis plan outlined above, key elements of data preparation include:</p>
+<div id="data-exclusion-filtering" class="section level4">
+<h4>Data Exclusion &amp; Filtering</h4>
+<ul>
+<li>Recoding anticipatory responses (i.e., those &lt;200 ms after stimulus presentation) as missing for accuracy and RT scores</li>
+<li>Recoding missing H&amp;F and MSIT responses as incorrect for the accuracy score and missing for the RT score</li>
+<li>Excluding all inaccurate trials and the first trial in each block from RT scores</li>
+<li>For participants who failed to meet the threshold of having non-missing scores for 8/8 DSB trials, 5/12 H&amp;F incongruent trials, 10/33 H&amp;F mixed trials, and 15/45 MSIT incongruent trials, recoding accuracy scores as missing</li>
+<li>For participants lacking at least three accurate trials for the H&amp;F incongruent block and the MSIT incongruent block, recoding RT scores as missing</li>
+<li>Windsorizing outliers (i.e., those with accuracy or RT scores that were &gt;4 SD above or below the sample mean) to the highest non-outlier value observed for that task</li>
+</ul>
+</div>
+<div id="additional-data-preparation" class="section level4">
+<h4>Additional Data Preparation</h4>
+<p>Without having seen the data, it is not currently possible to outline all of the steps that will be needed to transform it into a tiny format, nor all of the new columns that will need to created, altered, and/or removed. Nevertheless, I already anticipate a need to create columns for the following variables: EF test accuracy composite score, EF test RT composite score, and teacher-reported self-regulated classroom behaviors composite score.</p>
+</div>
 </div>
 <div id="confirmatory-analysis" class="section level3">
 <h3>Confirmatory Analysis</h3>
 <p>The analyses as specified in the analysis plan.</p>
-<p><em>Side-by-side graph with original graph is ideal here</em></p>
+<p>The two main inferences in the original paper involve the mean differences between IA and GA performance composites and the predictive validity of EF performance in IA and GA settings for children’s self-regulated classroom behaviors and academic achievement, both of which are justified using multilevel regression analyses.</p>
+<p><em>To be filled in: Side-by-side graph with original graph is ideal here.</em></p>
 </div>
 <div id="exploratory-analyses" class="section level3">
 <h3>Exploratory Analyses</h3>
