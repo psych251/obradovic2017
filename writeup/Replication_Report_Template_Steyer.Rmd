@@ -73,7 +73,7 @@ Cronbach's alpha reliability for the RT variables was as follows: MSIT incongrue
 
 #### Self-Regulated Classroom Behaviors
 
-"Teachers reported on students' classroom behaviors relevant to academic success using the Teacher-Child Rating Scale (TCRS; Hightower, 1986). Each item on the task orientation (e.g., “well-organized”, “com- pletes work”, “works well without adult support”) and frustration tolerance (e.g., “accepts things not going his/her way”, “copes well with failure”) scales was rated on a five-point scale, ranging from 1 = “not at all” to 5 = “very well”."
+"Teachers reported on students' classroom behaviors relevant to academic success using the Teacher-Child Rating Scale (TCRS; Hightower, 1986). Each item on the task orientation (e.g., “well-organized”, “completes work”, “works well without adult support”) and frustration tolerance (e.g., “accepts things not going his/her way”, “copes well with failure”) scales was rated on a five-point scale, ranging from 1 = “not at all” to 5 = “very well”."
 
 #### Covariates
 
@@ -103,7 +103,7 @@ Please see above for references to important data cleaning and exclusion rules, 
 
 ### Differences from Original Study
 
-Because this is a reproduction using the data from the original study, I do not anticipate any differences in sample, setting, procedure, or analysis plan. The only differences I foresee involve the actual R code used in the analyses, as I will be developing my code from scratch.
+Because this is a reproduction using the data from the original study, there were no differences in sample, setting, procedure, or analysis plan. The only differences involved the actual R code used in the analyses. 
 
 ```{r include=FALSE}
 ### Methods Addendum (Post Data Collection)
@@ -119,11 +119,11 @@ Because this is a reproduction using the data from the original study, I do not 
 
 ## Results
 
-### Data Preparation
+### Data Preparation: High-Level Description
 
 Based on the materials and analysis plan outlined above, key elements of data preparation include:
 
-#### Data Exclusion & Filtering
+#### Data Exclusion and Filtering
 
 * Recoding anticipatory responses (i.e., those <200 ms after stimulus presentation) as missing for accuracy and RT scores
 * Recoding missing H&F and MSIT responses as incorrect for the accuracy score and missing for the RT score
@@ -132,21 +132,131 @@ Based on the materials and analysis plan outlined above, key elements of data pr
 * For participants lacking at least three accurate trials for the H&F incongruent block and the MSIT incongruent block, recoding RT scores as missing
 * Windsorizing outliers (i.e., those with accuracy or RT scores that were >4 SD above or below the sample mean) to the highest non-outlier value observed for that task
 
-#### Additional Data Preparation
+#### Additional Data Preparation: Composite Creation
 
-Without having seen the data, it is not currently possible to outline all of the steps that will be needed to transform it into a tiny format, nor all of the new columns that will need to created, altered, and/or removed. Nevertheless, I already anticipate a need to create columns for the following variables: EF test accuracy composite score, EF test RT composite score, and teacher-reported self-regulated classroom behaviors composite score.
+The following three composite variables will need to be constructed from raw data: teacher-reported EF composite score, EF test accuracy composite score, and EF test RT composite score. 
 
-```{r include=F}
-### Data Preparation
+### Creating a Hybrid 4-Variable Hightower/BRIEF Teacher-Report EF Composite Score
 
-#### Load Relevant Libraries and Functions
+Inclusion criteria for composite (received directly from original authors):
 
-#### Import data
+Items: **HIGHTOWER**
+  
+  Scoring:
+  
+    1 = Not at all 
+    2 = A little
+    3 = Moderately well 
+    4 = Well 
+    5 = Very well
+ 
+  Task Orientation, 
+    Item #3: "Functions well even with distractions"
 
-#### Data exclusion / filtering
+  Acting Out, 
+    Item #2: "Fidgety, difficulty sitting still"
 
-#### Prepare data for analysis - create columns etc.
+Items: **BRIEF** 
+  
+  Scoring:
+    
+    0 = Never
+    1 = Sometimes
+    2 = Often
+ 
+  Cognitive Flexibility, 
+    Item #5: "Resists or has trouble accepting a different way to 
+    solve a problem with schoolwork, friends, chores, etc."	
+ 
+  Working Memory,
+    Item #25: "Has trouble with chores or tasks that have more than 
+    one step"
+    
+```{r}
+# Load relevant libraries
+library(mjs)
+library(ggplot2)
+library(cowplot)
+library(moments)
+
+# Set up
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+
+# Import data
+setwd("~/Desktop/obradovic2017/writeup/data")
+tcrs <- read.csv("PLUS_teacher_survey_variables_studentlevel.csv")
+head(tcrs)
+
+# Process data
+# Sort by student id, drop duplicates
+tcrs <- tcrs[order(tcrs[ , "stud_id"]), 1:51]
+
+# Get rid of variable name issues (extra _) 
+names(tcrs) <- sub("_$", "", names(tcrs))
+
+# Drop unnecessary "child_num" variable
+tcrs[ , "child_num"] <- NULL
+
+# Rename rows (from misc. list to "1, 2, 3...n")
+row.names(tcrs) <- as.character(1:nrow(tcrs))
+
+# Reverse "acting out" Hightower items (so that higher scores indicate greater EF)
+for (j in paste0("tcrs_ao", 1:6)) {
+    tcrs[ , paste0(j, "r")] <- as.integer(6 - tcrs[ , j])
+}
+
+# Reverse all BRIEF items (so that higher scores indicate greater EF)
+for (j in grep("brief", names(tcrs), value=TRUE)) {
+   tcrs[ , paste0(j, "r")] <- as.integer(2 - tcrs[ , j])
+}
+
+# Rename BRIEF items to make more legible
+names(tcrs)[names(tcrs)=="brief_1r"] <- "brief_wm_1"
+names(tcrs)[names(tcrs)=="brief_4r"] <- "brief_wm_2"
+names(tcrs)[names(tcrs)=="brief_7r"] <- "brief_wm_3"
+names(tcrs)[names(tcrs)=="brief_10r"] <- "brief_wm_4"
+names(tcrs)[names(tcrs)=="brief_2r"] <- "brief_cf_1"
+names(tcrs)[names(tcrs)=="brief_3r"] <- "brief_cf_2"
+names(tcrs)[names(tcrs)=="brief_6r"] <- "brief_cf_3"
+names(tcrs)[names(tcrs)=="brief_9r"] <- "brief_cf_4"
+names(tcrs)[names(tcrs)=="brief_5r"] <- "brief_ec_1"
+names(tcrs)[names(tcrs)=="brief_8r"] <- "brief_ec_2"
+names(tcrs)[names(tcrs)=="brief_11r"] <- "brief_ec_3"
+names(tcrs)[names(tcrs)=="brief_12r"] <- "brief_ec_4"
+
+# Make composite data frame with Hightower + BRIEF items of interest
+hybrid_vars <- c("tcrs_ao2r", "tcrs_to3", "brief_wm_2", "brief_cf_1")
+hybrid <- tcrs[ , c("stud_id", hybrid_vars)]
+
+# Add columns with each item's z-score
+for (j in hybrid_vars) {
+    hybrid[ , paste0(j, "_z")] <- as.numeric(scale(hybrid[ , j]))
+}
+
+# Remove rows with no data 
+hybrid <- hybrid[nvalid(hybrid[ , hybrid_vars]) > 0, ]
+
+# Add column with composite scores
+hybrid[ , "ef4"] <- as.numeric(rowMeans(hybrid[ , paste0(hybrid_vars, "_z")], na.rm=TRUE))
+head(hybrid)
+
+# Check out rating frequencies
+sapply(hybrid[ , hybrid_vars], table, useNA='always')
+
+# Check out descriptive statistics
+desc(hybrid[ , c(hybrid_vars, paste0(hybrid_vars, "_z"), "ef4")], c(mean, sd, skewness, kurtosis, min, max))
+
+# Check out alpha reliability (results show alpha = 0.81)
+alphaRel(hybrid[ , paste0(hybrid_vars, "_z")])
 ```
+
+### Creating a EF Test Accuracy Composite Score
+
+*...coming soon! I anticipate this composite will be harder to create than the one above, since there is more data prep required (recoding missing data, etc.) to get things into shape before the composite can be calculated.*
+
+### Creating a EF Test RT Composite Score
+
+*...coming soon! I anticipate this composite will be harder to create than the one above, since there is more data prep required (recoding missing data, etc.) to get things into shape before the composite can be calculated.*
 
 ### Confirmatory Analysis
 
