@@ -12,7 +12,7 @@
 
 <meta name="author" content="Lily Steyer (lsteyer@stanford.edu)" />
 
-<meta name="date" content="2019-10-20" />
+<meta name="date" content="2019-10-27" />
 
 <title>Reproduction of a Validation Study for a Group-Based Assessment of Children’s Executive Functions (2017, Journal of Applied Developmental Psychology)</title>
 
@@ -1512,7 +1512,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Reproduction of a Validation Study for a Group-Based Assessment of Children’s Executive Functions (2017, Journal of Applied Developmental Psychology)</h1>
 <h4 class="author">Lily Steyer (<a href="mailto:lsteyer@stanford.edu" class="email">lsteyer@stanford.edu</a>)</h4>
-<h4 class="date">October 20, 2019</h4>
+<h4 class="date">October 27, 2019</h4>
 
 </div>
 
@@ -1580,7 +1580,7 @@ div.tocify {
 </div>
 <div id="self-regulated-classroom-behaviors" class="section level4">
 <h4>Self-Regulated Classroom Behaviors</h4>
-<p>“Teachers reported on students’ classroom behaviors relevant to academic success using the Teacher-Child Rating Scale (TCRS; Hightower, 1986). Each item on the task orientation (e.g., “well-organized”, “com- pletes work”, “works well without adult support”) and frustration tolerance (e.g., “accepts things not going his/her way”, “copes well with failure”) scales was rated on a five-point scale, ranging from 1 = “not at all” to 5 = “very well”.&quot;</p>
+<p>“Teachers reported on students’ classroom behaviors relevant to academic success using the Teacher-Child Rating Scale (TCRS; Hightower, 1986). Each item on the task orientation (e.g., “well-organized”, “completes work”, “works well without adult support”) and frustration tolerance (e.g., “accepts things not going his/her way”, “copes well with failure”) scales was rated on a five-point scale, ranging from 1 = “not at all” to 5 = “very well”.&quot;</p>
 </div>
 <div id="covariates" class="section level4">
 <h4>Covariates</h4>
@@ -1606,16 +1606,16 @@ div.tocify {
 </div>
 <div id="differences-from-original-study" class="section level3">
 <h3>Differences from Original Study</h3>
-<p>Because this is a reproduction using the data from the original study, I do not anticipate any differences in sample, setting, procedure, or analysis plan. The only differences I foresee involve the actual R code used in the analyses, as I will be developing my code from scratch.</p>
+<p>Because this is a reproduction using the data from the original study, there were no differences in sample, setting, procedure, or analysis plan. The only differences involved the actual R code used in the analyses.</p>
 </div>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
-<div id="data-preparation" class="section level3">
-<h3>Data Preparation</h3>
+<div id="data-preparation-high-level-description" class="section level3">
+<h3>Data Preparation: High-Level Description</h3>
 <p>Based on the materials and analysis plan outlined above, key elements of data preparation include:</p>
-<div id="data-exclusion-filtering" class="section level4">
-<h4>Data Exclusion &amp; Filtering</h4>
+<div id="data-exclusion-and-filtering" class="section level4">
+<h4>Data Exclusion and Filtering</h4>
 <ul>
 <li>Recoding anticipatory responses (i.e., those &lt;200 ms after stimulus presentation) as missing for accuracy and RT scores</li>
 <li>Recoding missing H&amp;F and MSIT responses as incorrect for the accuracy score and missing for the RT score</li>
@@ -1625,10 +1625,258 @@ div.tocify {
 <li>Windsorizing outliers (i.e., those with accuracy or RT scores that were &gt;4 SD above or below the sample mean) to the highest non-outlier value observed for that task</li>
 </ul>
 </div>
-<div id="additional-data-preparation" class="section level4">
-<h4>Additional Data Preparation</h4>
-<p>Without having seen the data, it is not currently possible to outline all of the steps that will be needed to transform it into a tiny format, nor all of the new columns that will need to created, altered, and/or removed. Nevertheless, I already anticipate a need to create columns for the following variables: EF test accuracy composite score, EF test RT composite score, and teacher-reported self-regulated classroom behaviors composite score.</p>
+<div id="additional-data-preparation-composite-creation" class="section level4">
+<h4>Additional Data Preparation: Composite Creation</h4>
+<p>The following three composite variables will need to be constructed from raw data: teacher-reported EF composite score, EF test accuracy composite score, and EF test RT composite score.</p>
 </div>
+</div>
+<div id="creating-a-hybrid-4-variable-hightowerbrief-teacher-report-ef-composite-score" class="section level3">
+<h3>Creating a Hybrid 4-Variable Hightower/BRIEF Teacher-Report EF Composite Score</h3>
+<p>Inclusion criteria for composite (received directly from original authors):</p>
+<p>Items: <strong>HIGHTOWER</strong></p>
+<p>Scoring:</p>
+<pre><code>1 = Not at all 
+2 = A little
+3 = Moderately well 
+4 = Well 
+5 = Very well</code></pre>
+<p>Task Orientation, Item #3: “Functions well even with distractions”</p>
+<p>Acting Out, Item #2: “Fidgety, difficulty sitting still”</p>
+<p>Items: <strong>BRIEF</strong></p>
+<p>Scoring:</p>
+<pre><code>0 = Never
+1 = Sometimes
+2 = Often</code></pre>
+<p>Cognitive Flexibility, Item #5: “Resists or has trouble accepting a different way to solve a problem with schoolwork, friends, chores, etc.”</p>
+<p>Working Memory, Item #25: “Has trouble with chores or tasks that have more than one step”</p>
+<pre class="r"><code># Load relevant libraries
+library(mjs)</code></pre>
+<pre><code>## Loading required package: psych</code></pre>
+<pre><code>## Loading required package: moments</code></pre>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## 
+## Attaching package: 'ggplot2'</code></pre>
+<pre><code>## The following objects are masked from 'package:psych':
+## 
+##     %+%, alpha</code></pre>
+<pre class="r"><code>library(cowplot)</code></pre>
+<pre><code>## 
+## ********************************************************</code></pre>
+<pre><code>## Note: As of version 1.0.0, cowplot does not change the</code></pre>
+<pre><code>##   default ggplot2 theme anymore. To recover the previous</code></pre>
+<pre><code>##   behavior, execute:
+##   theme_set(theme_cowplot())</code></pre>
+<pre><code>## ********************************************************</code></pre>
+<pre class="r"><code>library(moments)
+
+# Set up
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+
+# Import data
+setwd(&quot;~/Desktop/obradovic2017/writeup/data&quot;)
+tcrs &lt;- read.csv(&quot;PLUS_teacher_survey_variables_studentlevel.csv&quot;)
+head(tcrs)</code></pre>
+<pre><code>##   stud_id teach_id child_num tc_close_1_ tc_close_2_ tc_close_3_ tc_con_1_
+## 1   80101     1001         5           4           5           2         1
+## 2   80116     1001         9           5           5           5         1
+## 3   80109     1001         7           3           5           5         1
+## 4   80105     1001         6           5           5           5         1
+## 5   80123     1001        10           3           5           5         1
+## 6   80113     1001         8           3           5           2         1
+##   tc_con_2_ tc_close_4_ tc_con_3_ tc_con_4_ tc_con_5_ tc_close_5_ tcrs_ft1
+## 1         1           2         1         1         1           2        5
+## 2         1           2         1         1         1           5        5
+## 3         1           2         1         1         1           5        5
+## 4         1           2         1         4         1           5        2
+## 5         1           2         1         1         1           5        5
+## 6         1           2         1         1         1           5        5
+##   tcrs_as2 tcrs_to1 tcrs_ao1 tcrs_ps1 tcrs_ft2 tcrs_as1 tcrs_ao2 tcrs_to2
+## 1        1        2        1        3        4        2        1        2
+## 2        5        5        1        5        4        5        1        5
+## 3        2        4        1        3        4        2        1        4
+## 4        5        4        3        3        4        4        1        4
+## 5        4        5        1        5        4        5        1        5
+## 6        3        5        1        5        4        4        1        5
+##   tcrs_ps2 tcrs_ao3 tcrs_ft3 tcrs_as3 tcrs_to3 tcrs_ao4 tcrs_ps3 tcrs_ft4
+## 1        3        2        5        2        2        1        3        2
+## 2        5        1        5        5        5        1        5        5
+## 3        5        1        5        2        2        1        5        2
+## 4        4        1        5        3        2        1        3        2
+## 5        4        1        5        5        5        1        5        5
+## 6        5        1        5        5        5        1        5        5
+##   tcrs_as4 tcrs_ao5 tcrs_to4 tcrs_ps4 tcrs_ft5 tcrs_as5 tcrs_ao6 tcrs_to5
+## 1        5        1        5        3        5        1        1        2
+## 2        5        1        5        5        5        1        1        5
+## 3        5        1        5        5        5        1        1        4
+## 4        5        1        5        3        2        2        1        3
+## 5        5        1        5        5        5        2        1        5
+## 6        5        1        5        5        5        1        1        5
+##   tcrs_ps5 brief_1_ brief_2_ brief_3_ brief_4_ brief_5_ brief_6_ brief_7_
+## 1        3        0        0        0        0        0        0        0
+## 2        5        0        0        0        0        0        0        0
+## 3        4        0        0        0        0        0        0        0
+## 4        3        0        1        0        0        2        1        1
+## 5        5        0        0        0        0        0        0        0
+## 6        5        0        0        0        0        0        0        0
+##   brief_8_ brief_9_ brief_10_ brief_11_ brief_12_ tcrs_act tcrs_task
+## 1        0        0         0         0         0 1.166667       2.6
+## 2        0        0         0         0         0 1.000000       5.0
+## 3        0        0         0         0         0 1.000000       3.8
+## 4        1        0         0         1         2 1.333333       3.6
+## 5        0        0         0         0         0 1.000000       5.0
+## 6        0        0         0         0         0 1.000000       5.0
+##   tcrs_asoc tcrs_peer tcrs_fru brief_flex brief_ec brief_wm HBQTCLO
+## 1       2.2       3.0      4.2          0        0        0     3.0
+## 2       4.2       5.0      4.8          0        0        0     4.4
+## 3       2.4       4.4      4.2          0        0        0     4.0
+## 4       3.8       3.2      3.0          2        6        1     4.4
+## 5       4.2       4.8      4.8          0        0        0     4.0
+## 6       3.6       5.0      4.8          0        0        0     3.4
+##   HBQTCON
+## 1     1.0
+## 2     1.0
+## 3     1.0
+## 4     1.6
+## 5     1.0
+## 6     1.0</code></pre>
+<pre class="r"><code># Process data
+# Sort by student id, drop duplicates
+tcrs &lt;- tcrs[order(tcrs[ , &quot;stud_id&quot;]), 1:51]
+
+# Get rid of variable name issues (extra _) 
+names(tcrs) &lt;- sub(&quot;_$&quot;, &quot;&quot;, names(tcrs))
+
+# Drop unnecessary &quot;child_num&quot; variable
+tcrs[ , &quot;child_num&quot;] &lt;- NULL
+
+# Rename rows (from misc. list to &quot;1, 2, 3...n&quot;)
+row.names(tcrs) &lt;- as.character(1:nrow(tcrs))
+
+# Reverse &quot;acting out&quot; Hightower items (so that higher scores indicate greater EF)
+for (j in paste0(&quot;tcrs_ao&quot;, 1:6)) {
+    tcrs[ , paste0(j, &quot;r&quot;)] &lt;- as.integer(6 - tcrs[ , j])
+}
+
+# Reverse all BRIEF items (so that higher scores indicate greater EF)
+for (j in grep(&quot;brief&quot;, names(tcrs), value=TRUE)) {
+   tcrs[ , paste0(j, &quot;r&quot;)] &lt;- as.integer(2 - tcrs[ , j])
+}
+
+# Rename BRIEF items to make more legible
+names(tcrs)[names(tcrs)==&quot;brief_1r&quot;] &lt;- &quot;brief_wm_1&quot;
+names(tcrs)[names(tcrs)==&quot;brief_4r&quot;] &lt;- &quot;brief_wm_2&quot;
+names(tcrs)[names(tcrs)==&quot;brief_7r&quot;] &lt;- &quot;brief_wm_3&quot;
+names(tcrs)[names(tcrs)==&quot;brief_10r&quot;] &lt;- &quot;brief_wm_4&quot;
+names(tcrs)[names(tcrs)==&quot;brief_2r&quot;] &lt;- &quot;brief_cf_1&quot;
+names(tcrs)[names(tcrs)==&quot;brief_3r&quot;] &lt;- &quot;brief_cf_2&quot;
+names(tcrs)[names(tcrs)==&quot;brief_6r&quot;] &lt;- &quot;brief_cf_3&quot;
+names(tcrs)[names(tcrs)==&quot;brief_9r&quot;] &lt;- &quot;brief_cf_4&quot;
+names(tcrs)[names(tcrs)==&quot;brief_5r&quot;] &lt;- &quot;brief_ec_1&quot;
+names(tcrs)[names(tcrs)==&quot;brief_8r&quot;] &lt;- &quot;brief_ec_2&quot;
+names(tcrs)[names(tcrs)==&quot;brief_11r&quot;] &lt;- &quot;brief_ec_3&quot;
+names(tcrs)[names(tcrs)==&quot;brief_12r&quot;] &lt;- &quot;brief_ec_4&quot;
+
+# Make composite data frame with Hightower + BRIEF items of interest
+hybrid_vars &lt;- c(&quot;tcrs_ao2r&quot;, &quot;tcrs_to3&quot;, &quot;brief_wm_2&quot;, &quot;brief_cf_1&quot;)
+hybrid &lt;- tcrs[ , c(&quot;stud_id&quot;, hybrid_vars)]
+
+# Add columns with each item's z-score
+for (j in hybrid_vars) {
+    hybrid[ , paste0(j, &quot;_z&quot;)] &lt;- as.numeric(scale(hybrid[ , j]))
+}
+
+# Remove rows with no data 
+hybrid &lt;- hybrid[nvalid(hybrid[ , hybrid_vars]) &gt; 0, ]
+
+# Add column with composite scores
+hybrid[ , &quot;ef4&quot;] &lt;- as.numeric(rowMeans(hybrid[ , paste0(hybrid_vars, &quot;_z&quot;)], na.rm=TRUE))
+head(hybrid)</code></pre>
+<pre><code>##   stud_id tcrs_ao2r tcrs_to3 brief_wm_2 brief_cf_1 tcrs_ao2r_z tcrs_to3_z
+## 1   10502         4        3          0          2 -0.06565568 -0.2920639
+## 2   10507         5        3          2          2  0.74652934 -0.2920639
+## 3   10509         3        1          1          2 -0.87784069 -1.7928231
+## 4   10511         4        3          1          1 -0.06565568 -0.2920639
+## 5   10512         4        3          1          2 -0.06565568 -0.2920639
+## 6   10514         2        1          1          1 -1.69002571 -1.7928231
+##   brief_wm_2_z brief_cf_1_z          ef4
+## 1   -1.7422920    0.7754184 -0.331148300
+## 2    0.8383090    0.7754184  0.517048205
+## 3   -0.4519915    0.7754184 -0.586809228
+## 4   -0.4519915   -0.6714517 -0.370290689
+## 5   -0.4519915    0.7754184 -0.008573175
+## 6   -0.4519915   -0.6714517 -1.151572996</code></pre>
+<pre class="r"><code># Check out rating frequencies
+sapply(hybrid[ , hybrid_vars], table, useNA='always')</code></pre>
+<pre><code>## $tcrs_ao2r
+## 
+##    1    2    3    4    5 &lt;NA&gt; 
+##   22   20   48   63  181    0 
+## 
+## $tcrs_to3
+## 
+##    1    2    3    4    5 &lt;NA&gt; 
+##   38   55   67   87   87    0 
+## 
+## $brief_wm_2
+## 
+##    0    1    2 &lt;NA&gt; 
+##   62   93  179    0 
+## 
+## $brief_cf_1
+## 
+##    0    1    2 &lt;NA&gt; 
+##   38  103  193    0</code></pre>
+<pre class="r"><code># Check out descriptive statistics
+desc(hybrid[ , c(hybrid_vars, paste0(hybrid_vars, &quot;_z&quot;), &quot;ef4&quot;)], c(mean, sd, skewness, kurtosis, min, max))</code></pre>
+<pre><code>##              mean   sd skewness kurtosis   min  max
+## tcrs_ao2r    4.08 1.23    -1.20     3.34  1.00 5.00
+## tcrs_to3     3.39 1.33    -0.36     1.95  1.00 5.00
+## brief_wm_2   1.35 0.78    -0.69     2.00  0.00 2.00
+## brief_cf_1   1.46 0.69    -0.91     2.58  0.00 2.00
+## tcrs_ao2r_z  0.00 1.00    -1.20     3.34 -2.50 0.75
+## tcrs_to3_z   0.00 1.00    -0.36     1.95 -1.79 1.21
+## brief_wm_2_z 0.00 1.00    -0.69     2.00 -1.74 0.84
+## brief_cf_1_z 0.00 1.00    -0.91     2.58 -2.12 0.78
+## ef4          0.00 0.80    -0.70     2.47 -2.04 0.89</code></pre>
+<pre class="r"><code># Check out alpha reliability (results show alpha = 0.81)
+alphaRel(hybrid[ , paste0(hybrid_vars, &quot;_z&quot;)])</code></pre>
+<pre><code>## $alpha
+## [1] 0.81
+## 
+## $varNames
+## [1] &quot;tcrs_ao2r_z&quot;  &quot;tcrs_to3_z&quot;   &quot;brief_wm_2_z&quot; &quot;brief_cf_1_z&quot;
+## 
+## $n
+## [1] 334
+## 
+## $alphaDel
+##       Variable alphaDel
+## 1  tcrs_ao2r_z     0.78
+## 2   tcrs_to3_z     0.71
+## 3 brief_wm_2_z     0.76
+## 4 brief_cf_1_z     0.80
+## 
+## $SE
+## [1] 0.02
+## 
+## $CI
+## lowerCI upperCI 
+##    0.78    0.84 
+## 
+## $correlations
+##              tcrs_ao2r_z tcrs_to3_z brief_wm_2_z brief_cf_1_z
+## tcrs_ao2r_z         1.00       0.62         0.44         0.43
+## tcrs_to3_z          0.62       1.00         0.66         0.48
+## brief_wm_2_z        0.44       0.66         1.00         0.46
+## brief_cf_1_z        0.43       0.48         0.46         1.00</code></pre>
+</div>
+<div id="creating-a-ef-test-accuracy-composite-score" class="section level3">
+<h3>Creating a EF Test Accuracy Composite Score</h3>
+<p><em>…coming soon! I anticipate this composite will be harder to create than the one above, since there is more data prep required (recoding missing data, etc.) to get things into shape before the composite can be calculated.</em></p>
+</div>
+<div id="creating-a-ef-test-rt-composite-score" class="section level3">
+<h3>Creating a EF Test RT Composite Score</h3>
+<p><em>…coming soon! I anticipate this composite will be harder to create than the one above, since there is more data prep required (recoding missing data, etc.) to get things into shape before the composite can be calculated.</em></p>
 </div>
 <div id="confirmatory-analysis" class="section level3">
 <h3>Confirmatory Analysis</h3>
