@@ -175,6 +175,8 @@ Items: **BRIEF**
 ```{r}
 # Load relevant libraries
 library(mjs)
+library(tidyverse)
+library(dplyr)
 library(ggplot2)
 library(cowplot)
 library(moments)
@@ -184,106 +186,69 @@ knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 
 # Import data
 setwd("~/Desktop/obradovic2017/writeup/data")
-tcrs <- read.csv("PLUS_teacher_survey_variables_studentlevel.csv")
-names(tcrs)
+tcrs2 <- read.csv("PLUS_teacher_survey_variables_studentlevel.csv")
+head(tcrs2)
 
 # Process data
 # Sort by student id, drop duplicates
-tcrs <- tcrs %>% 
+tcrs2 %>% 
   arrange(stud_id) %>%
   filter(duplicated(stud_id) == FALSE)
 
 # Get rid of variable name issues (extra _) 
 names(tcrs) <- sub("_$", "", names(tcrs))
 
-# Drop unnecessary "child_num" column and last 10 columns (not necessary for analysis)
-tcrs <- tcrs %>% 
-  select(-child_num,
-         -tcrs_act,
-         -tcrs_task,
-         -tcrs_asoc,
-         -tcrs_peer,
-         -tcrs_fru,
-         -brief_flex,
-         -brief_ec,
-         -brief_wm,
-         -HBQTCLO,
-         -HBQTCON)
+# Drop unnecessary "child_num" variable
+tcrs[ , "child_num"] <- NULL
 
 # Rename rows (from misc. list to "1, 2, 3...n")
 row.names(tcrs) <- as.character(1:nrow(tcrs))
 
-# Reverse all "acting out" Hightower items (so that higher scores indicate greater EF)
-## Create character vector of all "acting out" Hightower variables
-ao_vars <- grep("tcrs_ao", names(tcrs), value=TRUE)
-
-## Create function to reverse all "acting out" Hightower variables
-ao_rev <- function(x) {
-  (6 - x)
+# Reverse "acting out" Hightower items (so that higher scores indicate greater EF)
+for (j in paste0("tcrs_ao", 1:6)) {
+    tcrs[ , paste0(j, "r")] <- as.integer(6 - tcrs[ , j])
 }
 
-## Apply function to vector of "acting out" Hightower variables (reverses values within existing columns)
-tcrs <- tcrs %>% 
-  mutate_at(.vars = ao_vars, .funs = ao_rev)
-
 # Reverse all BRIEF items (so that higher scores indicate greater EF)
-## Create character vector of all BRIEF variables
-b_vars <- grep("brief", names(tcrs), value=TRUE)
+for (j in grep("brief", names(tcrs), value=TRUE)) {
+   tcrs[ , paste0(j, "r")] <- as.integer(2 - tcrs[ , j])
+}
 
-## Create function to reverse BRIEF scores
-b_rev <- function(x) {
-  (2 - x)
-} 
+# Rename BRIEF items to make more legible
+names(tcrs)[names(tcrs)=="brief_1r"] <- "brief_wm_1"
+names(tcrs)[names(tcrs)=="brief_4r"] <- "brief_wm_2"
+names(tcrs)[names(tcrs)=="brief_7r"] <- "brief_wm_3"
+names(tcrs)[names(tcrs)=="brief_10r"] <- "brief_wm_4"
+names(tcrs)[names(tcrs)=="brief_2r"] <- "brief_cf_1"
+names(tcrs)[names(tcrs)=="brief_3r"] <- "brief_cf_2"
+names(tcrs)[names(tcrs)=="brief_6r"] <- "brief_cf_3"
+names(tcrs)[names(tcrs)=="brief_9r"] <- "brief_cf_4"
+names(tcrs)[names(tcrs)=="brief_5r"] <- "brief_ec_1"
+names(tcrs)[names(tcrs)=="brief_8r"] <- "brief_ec_2"
+names(tcrs)[names(tcrs)=="brief_11r"] <- "brief_ec_3"
+names(tcrs)[names(tcrs)=="brief_12r"] <- "brief_ec_4"
 
-# Apply function to vector of BRIEF variables
-tcrs <- tcrs %>% 
-  mutate_at(.vars = b_vars, .funs = b_rev)
-
-# Rename BRIEF items to make more legible 
-# wm = working memory, cf = cognitive flexibility, ec = executive control
-tcrs <- tcrs %>% 
-  rename(brief_wm_1 = brief_1, 
-         brief_wm_2 = brief_4, 
-         brief_wm_3 = brief_7,
-         brief_wm_4 = brief_10,
-         brief_cf_1 = brief_2, 
-         brief_cf_2 = brief_3, 
-         brief_cf_3 = brief_6,
-         brief_cf_4 = brief_9,
-         brief_ec_1 = brief_5,
-         brief_ec_2 = brief_8, 
-         brief_ec_3 = brief_11,
-         brief_ec_4 = brief_12)
-
-# Make composite data frame called "hybrid" with four Hightower + BRIEF items of interest
-hybrid_vars <- c("tcrs_ao2", "tcrs_to3", "brief_wm_2", "brief_cf_1")
+# Make composite data frame with Hightower + BRIEF items of interest
+hybrid_vars <- c("tcrs_ao2r", "tcrs_to3", "brief_wm_2", "brief_cf_1")
 hybrid <- tcrs[ , c("stud_id", hybrid_vars)]
 
-# Add columns with each of the four items' z-scores
-hybrid <- hybrid %>% 
-  mutate(tcrs_ao2_z = as.numeric(scale(tcrs_ao2)),
-         tcrs_to3_z = as.numeric(scale(tcrs_to3)),
-         brief_wm_2_z = as.numeric(scale(brief_wm_2)),
-         brief_cf_1_z = as.numeric(scale(brief_cf_1))
-  )
-head(hybrid)
+# Add columns with each item's z-score
+for (j in hybrid_vars) {
+    hybrid[ , paste0(j, "_z")] <- as.numeric(scale(hybrid[ , j]))
+}
 
-# Remove rows with no data (2 total rows)
-hybrid <- hybrid %>% 
-  drop_na()
+# Remove rows with no data 
+hybrid <- hybrid[nvalid(hybrid[ , hybrid_vars]) > 0, ]
 
 # Add column with composite scores
-# hybrid[ , "ef4"] <- as.numeric(rowMeans(hybrid[ , paste0(hybrid_vars, "_z")], na.rm=TRUE))
-hybrid <- hybrid %>% 
-  mutate(ef4 = as.numeric(rowMeans(hybrid[ , paste0(hybrid_vars, "_z")], na.rm=TRUE)))
+hybrid[ , "ef4"] <- as.numeric(rowMeans(hybrid[ , paste0(hybrid_vars, "_z")], na.rm=TRUE))
 head(hybrid)
 
 # Check out rating frequencies
 sapply(hybrid[ , hybrid_vars], table, useNA='always')
 
 # Check out descriptive statistics
-mjs::desc(hybrid[ , c(hybrid_vars, paste0(hybrid_vars, "_z"), "ef4")], 
-     c(mean, sd, skewness, kurtosis, min, max))
+desc(hybrid[ , c(hybrid_vars, paste0(hybrid_vars, "_z"), "ef4")], c(mean, sd, skewness, kurtosis, min, max))
 
 # Check out alpha reliability (results show alpha = 0.81)
 alphaRel(hybrid[ , paste0(hybrid_vars, "_z")])
@@ -301,7 +266,7 @@ alphaRel(hybrid[ , paste0(hybrid_vars, "_z")])
 
 The analyses as specified in the analysis plan. 
 
-The two main inferences in the original paper involve the mean differences between IA and GA performance composites and the predictive validity of EF performance in IA and GA settings for children's self-regulated classroom behaviors and academic achievement, both of which are justified using multilevel regression analyses. 
+The two main inferences in the original paper involve the mean differences between IA and GA performance composites and the predictive validity of EF performance in IA and GA settings for children's self-regulated classroom behaviors and academic achievement, both of which are justified using multilevel regression analyses.
 
 *To be filled in: Side-by-side graph with original graph is ideal here.*
 
