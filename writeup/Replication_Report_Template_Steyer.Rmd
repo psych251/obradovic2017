@@ -282,9 +282,10 @@ head(hybrid)
 sapply(hybrid[ , hybrid_vars], table, useNA='always')
 
 # Check out descriptive statistics
-mjs::desc(hybrid[ , c(hybrid_vars, paste0(hybrid_vars, "_z"), "ef4")], 
-     c(mean, sd, skewness, kurtosis, min, max))
-
+hybrid %>% 
+  select(-stud_id) %>%
+  mjs::desc(c(mean, sd, skewness, kurtosis, min, max))
+  
 # Check out alpha reliability (results show alpha = 0.81)
 alphaRel(hybrid[ , paste0(hybrid_vars, "_z")])
 ```

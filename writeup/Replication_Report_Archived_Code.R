@@ -29,6 +29,5 @@ for (j in hybrid_vars) {
 hybrid <- hybrid[nvalid(hybrid[ , hybrid_vars]) > 0, ]
 
 # Check out descriptive statistics
-hybrid %>% 
-  select(-stud_id) %>%
-  summarise()
+mjs::desc(hybrid[ , c(hybrid_vars, paste0(hybrid_vars, "_z"), "ef4")], 
+          c(mean, sd, skewness, kurtosis, min, max))
