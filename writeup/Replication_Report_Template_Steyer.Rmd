@@ -175,6 +175,8 @@ Items: **BRIEF**
 ```{r}
 # Load relevant libraries
 library(mjs)
+library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(cowplot)
 library(moments)
@@ -188,9 +190,9 @@ tcrs <- read.csv("PLUS_teacher_survey_variables_studentlevel.csv")
 names(tcrs)
 
 # Process data
-# Sort by student id, drop duplicates
-tcrs <- tcrs %>% 
-  arrange(stud_id) %>%
+# Sort by student id
+tcrs <- tcrs %>%  
+  arrange(stud_id) %>% 
   filter(duplicated(stud_id) == FALSE)
 
 # Get rid of variable name issues (extra _) 
@@ -273,7 +275,6 @@ hybrid <- hybrid %>%
   drop_na()
 
 # Add column with composite scores
-# hybrid[ , "ef4"] <- as.numeric(rowMeans(hybrid[ , paste0(hybrid_vars, "_z")], na.rm=TRUE))
 hybrid <- hybrid %>% 
   mutate(ef4 = as.numeric(rowMeans(hybrid[ , paste0(hybrid_vars, "_z")], na.rm=TRUE)))
 head(hybrid)

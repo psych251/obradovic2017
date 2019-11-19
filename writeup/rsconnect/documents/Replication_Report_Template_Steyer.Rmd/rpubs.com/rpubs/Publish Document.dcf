@@ -6,5 +6,5 @@ server: rpubs.com
 hostUrl: rpubs.com
 appId: https://api.rpubs.com/api/v1/document/544013/929b57cc2c5745ca99ae95a469cfc728
 bundleId: https://api.rpubs.com/api/v1/document/544013/929b57cc2c5745ca99ae95a469cfc728
-url: http://rpubs.com/publish/claim/544013/e78a87fa2c724bfc8ae919e793416f55
-when: 1572239951.00924
+url: http://rpubs.com/lsteyer/544013
+when: 1574121835.16368

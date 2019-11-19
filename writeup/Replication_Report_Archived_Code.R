@@ -1,5 +1,10 @@
 # Replication Report Archive! 
 
+# Sort by student id, remove duplicates
+tcrs <- tcrs %>% 
+  arrange(stud_id) %>%
+  filter(duplicated(stud_id) == FALSE)
+
 # Reverse "acting out" Hightower items (so that higher scores indicate greater EF)
 for (j in paste0("tcrs_ao", 1:6)) {
   tcrs[ , paste0(j, "r")] <- as.integer(6 - tcrs[ , j])
